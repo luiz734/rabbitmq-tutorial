@@ -8,6 +8,7 @@
 
 import pika
 import sys
+import threading
 
 def publisher(client, car_type, origem, destination):
     # Estabelece uma conexão com o servidor RabbitMQ
@@ -23,7 +24,7 @@ def publisher(client, car_type, origem, destination):
     binding_key = f"{car_type}.{origem}.{destination}"
 
     # Cria objeto de mensagem a ser enviado
-    message = f" Cliente {client} deseja uma corrida da origem: {origem} ao destino {destination}.\n"
+    message = f" Cliente {client} deseja uma corrida da origem {origem} ao destino {destination}.\n"
     channel.basic_publish(exchange='topic_logs',
                           routing_key=binding_key,
                           body=message)
@@ -31,3 +32,6 @@ def publisher(client, car_type, origem, destination):
     print(f" ENVIADO PEDIDO DE CORRIDA: {client}: {message}, Routing key: {binding_key}\n")
 
     connection.close()
+
+# p1 = threading.Thread(target=publisher, args=("João", "*", "centro", "batel"))
+publisher("João", "*", "centro", "batel")

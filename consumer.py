@@ -1,6 +1,6 @@
 import pika
 
-def consumer(car_type, origem, destination, name):
+def consumer(driver_name, car_type, origem, destination):
     # Estabelece uma conexão com o servidor RabbitMQ
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
@@ -28,7 +28,7 @@ def consumer(car_type, origem, destination, name):
                        queue=queue_name,
                        routing_key=binding_key)
 
-    print(f" {name} aguardando corridas, {binding_key}.\n")
+    print(f" {driver_name} aguardando corridas, {binding_key}.\n")
 
     # Sobrescrevendo a função de retorno da mensagem da fila
     def callback(ch, method, properties, body):
@@ -41,3 +41,6 @@ def consumer(car_type, origem, destination, name):
                           auto_ack=True)
 
     channel.start_consuming()
+
+# p1 = threading.Thread(target=publisher, args=("João", "*", "centro", "batel"))
+consumer("Zezão", "*", "*", "*")

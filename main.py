@@ -1,5 +1,6 @@
 # Uber app simulator using RabbitMQ
 import string
+import os
 
 from consumer import consumer
 from publisher import publisher
@@ -9,35 +10,25 @@ import time
 
 
 def main():
-    car_type_a = input(f"Digite o tipo do seu veículo['normal', 'utilitario', 'luxo']\n")
+    # car_type_a = ask_question(f"Tipo de veículo", car_types)
+    # origem_a = ask_question(f"Bairro em que se encontra", neighborhoods)
+    # destination_a = ask_question(f"Bairro destino", neighborhoods)
+    # car_type_b = ask_question(f"Tipo de veículo", car_types)
+    # origem_b = ask_question(f"Bairro em que se encontra", neighborhoods)
+    # destination_b = ask_question(f"Bairro destino", neighborhoods)
 
-    origem_a = input(f"Digite o bairro em que se encontra: \n ['centro', 'aguaverde', 'batel']\n")
-    destination_a = input(f"Digite o bairro de destino: \n ['centro', 'aguaverde', 'batel']\n")
-
-    car_type_b = input(f"Digite o tipo do seu veículo['normal', 'utilitario', 'luxo']\n")
-
-    origem_b = input(f"Digite o bairro em que se encontra: \n ['centro', 'aguaverde', 'batel']\n")
-    destination_b = input(f"Digite o bairro de destino: \n ['centro', 'aguaverde', 'batel']\n")
-
-    car_type = ['normal', 'utilitario', 'luxo']
-    origem_destination = ['centro', 'aguaverde', 'batel']
-    thread_client_a = threading.Thread(target=publisher, args=(random.choice(string.ascii_uppercase), 'normal',
-                                                                   'centro', 'centro'))
-    thread_client_b = threading.Thread(target=publisher, args=(random.choice(string.ascii_uppercase), random.choice(car_type),
-                                                                   random.choice(origem_destination), random.choice(origem_destination)))
-    thread_uber_a = threading.Thread(target=consumer, args=(car_type_a, origem_a, destination_a, "Uber A"))
-    thread_uber_b = threading.Thread(target=consumer, args=(car_type_b, origem_b, destination_b, "Uber B"))
-
-    thread_client_a.start()
-    thread_client_b.start()
-    thread_uber_a.start()
-    thread_uber_b.start()
-
-    # thread_uber_a.join()
-    # thread_uber_b.join()
+    # p1 = threading.Thread(target=publisher, args=("João", "*", "centro", "batel"))
+    # c1 = threading.Thread(target=consumer, args=("Zezão", "normal", "*", "*"))
+    #
+    # c1.start()
+    # time.sleep(2)
+    # p1.start()
+    # c1.join()
+    # p1.join()
+    pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         main()
     except Exception as e:
