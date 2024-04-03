@@ -4,13 +4,10 @@
 # python consumer.py "*.<binding_key>"
 # python consumer.py "<binding_key>.*" "*.<binding_key>"
 # python consumer.py "<binding_key>.#"
-# Uber - Carro porte X, bairro Y, Z, A
 
 import pika
-import sys
-import threading
 
-def publisher(client, car_type, origem, destination):
+def publisher(client, time_of_day, subject, level):
     # Estabelece uma conexão com o servidor RabbitMQ
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
@@ -18,20 +15,14 @@ def publisher(client, car_type, origem, destination):
     # Criado uma exchange do tipo 'topic_logs' do tipo topic (a mensagem vai para quem tiver um binding key de interesse)
     channel.exchange_declare(exchange='topic_logs', exchange_type='topic')
 
-    # Lê a lista de binding keys separada por .
-    # routing_key = sys.argv[1] if len(sys.argv) > 2 else 'anonymous.info'
-
-    binding_key = f"{car_type}.{origem}.{destination}"
+    binding_key = f"{time_of_day}.{subject}.{level}"
 
     # Cria objeto de mensagem a ser enviado
-    message = f" Cliente {client} deseja uma corrida da origem {origem} ao destino {destination}.\n"
+    message = f" Client {client} wishes to enroll in course {subject}, level {level} and during shift {time_of_day}.\n"
     channel.basic_publish(exchange='topic_logs',
                           routing_key=binding_key,
                           body=message)
 
-    print(f" ENVIADO PEDIDO DE CORRIDA: {client}: {message}, Routing key: {binding_key}\n")
+    print(f" Publisher send: {client}: {message}, Routing key: {binding_key}\n")
 
     connection.close()
-
-# p1 = threading.Thread(target=publisher, args=("João", "*", "centro", "batel"))
-publisher("João", "*", "centro", "batel")
