@@ -24,7 +24,7 @@ def consumer(client, time_of_day, subject, level):
 
     # Sobrescrevendo a função de retorno da mensagem da fila
     def callback(ch, method, properties, body):
-        print(f" Found a client {body}, Routing key: {method.routing_key}\n")
+        print(f" Teacher {client} found a client {body.decode().strip()}, Routing key: {method.routing_key}\n")
 
     # Informa a fila que ela receberá mensagens da função callback
     # Informa que ela só enviará um pedido para um receptor se receber o ack dele
